@@ -1,0 +1,138 @@
+{% extends "shimosheji_base_admin.html" %}
+{% block head %}
+<title>羴羴&middot;石墨设计</title>
+<style type="text/css">
+.rgallappbtn {
+    display: none;
+}
+</style>
+<link href="/css/fuelux.css" rel="stylesheet">
+<link href="/css/fuelux-responsive.css" rel="stylesheet">
+<script> require(['jquery','/js/wizard.js']) </script>
+<script type="text/javascript">
+require(['jquery','domReady!'], function(doc){
+    $('#newapp_form').submit(function() { 
+        $('#newapp_name_msg').text('');
+        $('#newapp_submit_msg').text('');
+
+        var newapp_name = $('#newapp_name').val();
+
+        if(newapp_name.length <= 0){
+            $('#newapp_name_msg').text('案例组名不能为空');
+            return false;
+        }
+        if(newapp_name.length > 20){
+            $('#newapp_name_msg').text('案例组名过长,请控制在20个字符以内');
+            return false;
+        }
+        var options = { 
+            url:'{{p_url["api_appadd"]}}',
+            type:'POST', 
+            dataType: 'json',
+            success: function(data){
+                $('#newapp_submit_msg').text(data.msg);
+                if( data.op==true){
+                    $('#newapp_submit').text('创建成功');
+                    $('#newapp_wizard').wizard('next');
+                    $('#newappid').text(data.appid);
+                }else{
+                    $('#newapp_submit').text('创建并获取AppKey');
+                    $('#newapp_submit').attr('disabled',false);
+                    $('#newapp_name').attr('disabled',false);
+                }
+            },
+            error: function(){
+                $('#newapp_submit').text('创建并获取AppKey');
+                $('#newapp_submit_msg').text('{{p_msg["err_500"]}}');
+                $('#newapp_submit').attr('disabled',false);
+                $('#newapp_name').attr('disabled',false);
+            },
+            beforeSubmit: function(formData, jqForm, options){
+                $('#newapp_submit').text('正在创建...');
+                $('#newapp_submit_msg').text('正在创建...');
+                $('#newapp_submit').attr('disabled',true);
+                $('#newapp_name').attr('disabled',true);
+            },
+        }; 
+        $('#newapp_form').ajaxSubmit(options); 
+        return false;
+    });
+    $('#newapp_complete_btn').click(function() { 
+        location.href = '{{p_url["host_home"]}}';
+    });
+});
+</script>
+{% end %}
+
+{% block location %}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block body %}
+<div class="rgbase">
+    <ul class="nav nav-pills rgsubnav">
+        <li class="active"><a>管理后台</a></li>
+    </ul>
+    <div class="rgmain fuelux">
+        <div id="newapp_wizard" class="wizard">
+            <ul class="steps">
+                <li data-target="#step1" class="active">1.填写案例组基本信息<span class="chevron"></span></li>
+                <li data-target="#step2" >2.编辑案例组的详细内容</li>
+            </ul>
+        </div>
+        <div class="step-content">
+            <div class="step-pane active rgnewapp" id="step1">
+                <form id="newapp_form">
+                    {% raw xsrf_form_html() %}
+                    <table width="800px" border="0" align="center" cellpadding="0" cellspacing="0">
+                    <tbody>
+                    <tr>
+                        <td width="80px" align="right" class="fir"><b class="muted">案例组名</b><span class="req">*</span></td>
+                        <td width="250px"><input id="newapp_name" name="app_name" size="30" type="text" value=""></td>
+                        <td class="req"><label id="newapp_name_msg"></label></td>
+                    </tr>
+                    <tr>
+                        <td align="right"></td>
+                        <td><button type="submit" id="newapp_submit" class="rgbtn-large btn btn-success">创建新案例组</button></td>
+                        <td class="req"><label id="newapp_submit_msg"></label></td>
+                    </tr>
+                    </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="step-pane rgnewapp" id="step2">
+                <table width="800" border="0" align="center" cellpadding="0" cellspacing="0">
+                <tbody>
+                <tr>
+                    <td width="80" align="right" class="fir"></td>
+                    <td width="320">
+                        <h5>新案例组已经建立：</h5>
+                        <h4 id="newappid" class="rgappid"></h4>
+                        <h5 class="muted">您添加的案例组当前还未显示在任何页面上</h5>
+                        <h5 class="muted">请您通知相应的技术人员进行添加</h5>
+                    </td>
+                </tr>
+                <tr>
+                    <td align="right"></td>
+                    <td><button id="newapp_complete_btn" class="btn btn-success rgbtn-large">添加完成</button></td>
+                    <td></td>
+                </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="rgfirst">
+        </div>
+    </div>
+</div>
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% end %}
+
+{% block footer %}
+{% end %}
+

@@ -1,0 +1,285 @@
+@charset "utf-8";
+/*== common start== */
+/*   start */
+.align_left {
+	text-align:left!important;
+}
+.align_center {
+	text-align:center!important;
+}
+.align_right {
+	text-align:right!important;
+}
+.v_align_top {
+	vertical-align:top;
+}
+.v_align_middle {
+	vertical-align:middle;
+}
+.v_align_bottom {
+	vertical-align:bottom;
+}
+/* text_align end */
+/* font start */
+.font_red {
+	color:#f00;
+}
+.font_green {
+	color:#007c80;
+}
+.font_orange {
+	color:#f60;
+}
+.font_blue {
+	color:#369;
+}
+.font_gray {
+	color:#bbb;
+}
+.font_bold {
+	font-weight:bold;
+}
+.font_purple {
+	color:#5D5184;
+}
+.font_throughline {
+	text-decoration:line-through;
+}
+.font_larger {
+	font-size:20px;
+}
+
+ .nav{
+	height:50px;
+	background:#4C4C4C 0 0 ;
+}
+ .nav_main{
+	width:930px;
+	margin:0 auto;
+}
+.nav_main .logo{
+	width:50px;
+	height:50px;
+    float:left;
+	background:url(./../images/icons/logo.png) center 0px no-repeat;
+}
+.nav_main .logo a{
+	display:block;
+	width:100%;
+	height:100%;
+}
+ .nav_main .slogan{
+  float:left;
+  font-size:27px;
+  color: #999999;
+  height:50px;
+  line-height:50px;
+  padding-left:10px;
+  margin-right: 50px;
+}
+
+ .nav .nav_main .nav_title
+{
+  float:left;
+  color: #999999;
+  height:50px;
+  line-height:50px;
+  padding-left:10px;
+}
+
+.nav .nav_main .nav_title ul{
+	float:right;
+	height:50px;
+}
+.nav .nav_main .nav_title ul li{
+	position:relative;
+	z-index:100;
+	height:50px;
+	float:left;
+	cursor:pointer;
+}
+.nav .nav_main .nav_title ul li a{
+	padding:0 12px;
+	color:#999999;
+	height:50px;
+	line-height:50px;
+	font-size:18px;
+	text-align:center;
+}
+ .nav .nav_main .nav_title ul li:hover .sub_nav{
+	display:block;
+}
+ .nav .nav_main .nav_title ul li .sub_nav{
+	padding:0;
+	color:#999999;
+	line-height:20px;
+	font-size:14px;
+	text-align:center;
+}
+.nav .nav_main .nav_title ul li.myapp .sub_nav{/* data's sub nav */
+	right:-25px;
+}
+ .nav .nav_main .nav_title ul li.myapp .sub_nav a,.header .nav .nav_main ul li.account .sub_nav dd a{
+  width:60px;
+}
+ .nav .nav_main .nav_title ul li.myapp .sub_nav  .triangle{
+	margin-left:40px;
+}
+ .nav .nav_main .nav_title ul li.myapp .sub_nav .main{
+	width:90px;
+}
+
+ .nav .nav_main .nav_title ul li.myapp .sub_nav dd{
+	line-height:34px;
+	height:34px;
+}
+ .nav .nav_main .nav_title ul li.myapp .sub_nav dd a{
+	text-align:left;
+	line-height:34px;
+	height:34px;
+	font-size:12px;
+	color:#333;
+	padding: 0 15px;
+	display:inline-block;
+	border:none;
+}
+ .nav .nav_main .nav_title ul li.myapp .sub_nav dd a:hover{
+	background:#93c1f6;
+	color:#062354;
+}
+
+ .nav .nav_main ul{
+	float:right;
+	height:50px;
+}
+ .nav .nav_main ul li{
+	position:relative;
+	z-index:100;
+	height:50px;
+	float:left;
+	cursor:pointer;
+}
+
+.nav .nav_main ul li:hover .sub_nav{
+	display:block;
+}
+.nav .nav_main ul li a{
+	padding:0 12px;
+	color:#999999;
+	height:50px;
+	line-height:50px;
+	font-size:14px;
+	text-align:center;
+}
+
+
+ .nav .nav_main ul li .sub_nav{
+	display:none;
+	position:absolute;
+	top:44px;
+	box-shadow:0 3px 10px #333;
+}
+ .nav .nav_main ul li .sub_nav .triangle{
+	border-color: transparent  transparent #f0f0f0 transparent;  
+	border-style: solid;  
+	border-width: 0 6px 6px 6px;  
+	padding: 0;  
+	width: 0;  
+	height: 0;  
+	font-size: 0;  
+	line-height: 0;
+	overflow:hidden;
+}
+ .nav .nav_main ul li .sub_nav .main{
+	padding:5px;
+	background:#f0f0f0;
+}
+
+ .nav .nav_main ul li.addapp{/* product's sub nav */
+
+}
+
+ .nav .nav_main ul li.downplug{/* product's sub nav */
+	margin-right: 50px;
+}
+
+.nav .nav_main ul li.account{/* product's sub nav */
+
+}
+
+ .nav .nav_main ul li.account .sub_nav{
+	right:0;
+}
+ .nav .nav_main ul li.account .sub_nav .triangle{
+	margin-left:43px;
+}
+ .nav .nav_main ul li.account .sub_nav .main{
+	width:90px;
+}
+
+ .nav .nav_main ul li .sub_nav dl{
+	float:left;
+}
+ .nav .nav_main ul li .sub_nav dt{
+	color:#2a5295;
+	font-size:14px;
+	line-height:34px;
+	height:34px;
+	padding: 0 15px;
+	cursor:default;
+	text-align:left;
+}
+ .nav .nav_main ul li .sub_nav dd{
+	line-height:34px;
+	height:34px;
+}
+ .nav .nav_main ul li .sub_nav dd a{
+	text-align:left;
+	line-height:34px;
+	height:34px;
+	font-size:12px;
+	color:#333;
+	padding: 0 15px;
+	display:inline-block;
+	border:none;
+}
+ .nav .nav_main ul li .sub_nav dd a:hover{
+	background:#93c1f6;
+	color:#062354;
+}
+
+ .content {
+   width: 930px;
+   margin-bottom:15px;
+   margin: 0 auto;
+}
+
+.content .body {
+  padding:15px 23px;
+  background-color:#ffffff;
+  position:relative;
+ }
+
+.content .header {
+    height: 50px;
+    text-align:right;
+}
+
+.content .header h2{
+  float:left;
+  color: #999;
+  margin-top: 13px;
+  margin-bottom: 13px;
+}
+
+.content .footer {
+    height: 20px;
+}
+
+.content .footer .company-contact{
+    float: left;
+}
+
+.content .footer .company-name{
+    float: right;
+}

@@ -1,0 +1,311 @@
+{% extends "shimosheji_base_admin.html" %}
+{% block head %}
+<title>羴羴&middot;石墨设计</title>
+<style type="text/css">
+</style>
+<script type="text/javascript">
+require([
+    'rgraph_common_core',
+    'rgraph_common_dynamic',
+    'rgraph_common_key',
+    'rgraph_common_tooltips',
+    'rgraph_common_effects',
+    'rgraph_drawing_rect',
+    'rgraph_line'
+]);
+</script>
+<script type="text/javascript">
+function draw_st(labels,values,keys){
+    RGraph.ObjectRegistry.Clear('cvs');
+    var tooltips = [];
+    for(var j=0;j<values.length;++j){
+        for(var i=0;i<values[j].length;++i){
+            tooltips.push( keys[j]+':'+values[j][i].toString());
+        }
+    }
+    var line = new RGraph.Line('cvs',values)
+        .Set('curvy',true)
+        .Set('curvy.tickmarks',true)
+        .Set('curvy.tickmarks.fill',null)
+        .Set('curvy.tickmarks.stroke','#aaa')
+        .Set('curvy.tickmarks.stroke.linewidth',2)
+        .Set('curvy.tickmarks.size',2)
+        .Set('linewidth',2)
+        .Set('hmargin',0)
+        .Set('labels',labels)
+        .Set('tooltips',tooltips)
+        .Set('tickmarks', 'circle')
+        .Set('shadow',true)
+        .Set('key',keys)
+        .Set('key.interactive',true)
+    RGraph.Effects.Line.jQuery.Trace(line);
+}
+function draw_grid(labels,values,keys){
+    var grid_head = '<tr style="font-size:10px;"><td style="width:60px"></td>'; //n的td数组
+    for(var i=0;i<labels.length;++i){
+        grid_head += '<td style="text-align:center;">'+labels[i]+'</td>';
+    }
+    grid_head += '</tr>'
+    var grid_body = ''; //n+1的tr二维数组
+    for(var j=0;j<keys.length;++j){
+        var grid_body_one = '<tr style="font-size:10px;"><td style="width:60px">'+keys[j]+'</td>';
+        for(var k=0;k<values[j].length;++k){
+            var tmp = values[j][k];
+            grid_body_one += '<td class="muted" style="text-align:center;">'+(tmp>0?tmp:'')+'</td>';
+            //grid_body_one += '<td class="muted" style="text-align:center;">'+222+'</td>';
+        }
+        grid_body_one += '</tr>';
+        grid_body +=grid_body_one;
+    }
+    var grid = '<table class="table table-hover"><tbody>'
+        +grid_head
+        +grid_body
+        +'</tbody></table>';
+    $('#stat_grid').html(grid);
+}
+require(['jquery','domReady!'], function(doc){
+    $('#stat_app_form').submit(function() { 
+        var options = { 
+            url:'{{p_url["api_stat"]}}',
+            type:'POST', 
+            dataType: 'json',
+            success: function(data){
+                if( data.op==true){
+                    var labels = data.res.labels;
+                    var datav = data.res.v;
+                    var datac = data.res.c;
+                    var datal = data.res.l;
+                    var datab = data.res.b;
+                    var values = [datav,datac,datal,datab];
+                    var keys = data.res.keys;
+                    $('html,body').animate({'scrollTop':'0'},'slow');
+                    draw_st(labels,values,keys);
+                    draw_grid(labels,values,keys);
+                }else{
+                    alert(data.msg);
+                }
+            },
+            error: function(){
+                alert(data.msg);
+            },
+            beforeSubmit: function(formData, jqForm, options){
+                redo=function(){$('#stat_app_form').submit();} 
+            },
+        }; 
+        $('#stat_app_form').ajaxSubmit(options); 
+        return false;
+    });
+    $('#stat_url_form').submit(function() { 
+        var options = { 
+            url:'{{p_url["api_stat"]}}',
+            type:'POST', 
+            dataType: 'json',
+            success: function(data){
+                if( data.op==true){
+                    var labels = data.res.labels;
+                    var datac = data.res.c;
+                    var datal = data.res.l;
+                    var datab = data.res.b;
+                    var values = [datac,datal,datab];
+                    var keys = data.res.keys;
+                    $('html,body').animate({'scrollTop':'0'},'slow');
+                    draw_st(labels,values,keys);
+                    draw_grid(labels,values,keys);
+                }else{
+                    alert(data.msg);
+                }
+            },
+            error: function(){
+                alert(data.msg);
+            },
+            beforeSubmit: function(formData, jqForm, options){
+                redo=function(){$('#stat_url_form').submit();} 
+            },
+        }; 
+        $('#stat_url_form').ajaxSubmit(options); 
+        return false;
+    });
+    redo();
+});
+var redo=function(){$('#stat_app_form').submit();} 
+function get_st_per(index,per){
+    $('#rid_app_per').val(per);
+    $('#rid_url_per').val(per);
+    $('#rid_per').children().each(function(i,n){
+        var obj=$(n);
+        if(i==index){
+            obj.addClass("active");
+        }else{
+            obj.removeClass();
+        }
+    });
+    redo();
+}
+function app_stat_click(){
+    $('#stat_app_form').submit();
+    $('#rid_bc').empty();
+    $('#rid_bc').html('<li><a href="{{p_url['host_stat']}}">全部统计</a><span class="divider">&gt;</span></li><li class="active">{{p_appinfo['name']}}</li>');
+}
+function url_stat_click(urlid,title){
+    $('#rid_url_urlid').val(urlid);
+    $('#rid_bc').empty();
+    $('#rid_bc').html(
+            '<li><a href="{{p_url['host_stat']}}">全部统计</a><span class="divider">&gt;</span></li>'
+            +'<li><a href="javascript:void(0)" onclick="app_stat_click()">{{p_appinfo['name']}}</a><span class="divider">&gt;</span></li>'
+            +'<li class="active">'+title+'</li>'
+        );
+    return true;
+}
+</script>
+{% end %}
+
+{% block location %}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block body %}
+<div class="rgbase">
+    <ul class="nav nav-pills rgsubnav">
+        <!-- <li class=""><a class="muted" href="">数据统计</a></li> -->
+        <li class="active"><a>管理后台</a></li>
+    </ul>
+    <div class="rgmain">
+        <div class="row-fluid">
+            <ul id="rid_bc" class="breadcrumb pull-left">
+                <li><a href="{{p_url['host_stat']}}">全部统计</a><span class="divider">&gt;</span></li>
+                <li class="active">{{p_appinfo['name']}}</li>
+            </ul>
+            <ul id="rid_per" class="nav nav-tabs pull-right" style="margin:-10px 20px 0 0;">
+                <li><a href="javascript:void(0)" onclick="get_st_per(0,'m')">按月</a></li>
+                <li><a href="javascript:void(0)" onclick="get_st_per(1,'d')">按天</a></li>
+                <li class="active"><a href="javascript:void(0);" onclick="get_st_per(2,'h')">按小时</a></li>
+            </ul>
+        </div>
+        <canvas id="cvs" width="940" height="300">[No canvas support]</canvas> 
+        <div id="stat_grid" style="width:940px;overflow-x:auto;">
+        </div>
+        <form id="stat_app_form">
+            {% raw xsrf_form_html() %}
+            <input type="text" id="stat_app_appid" class="hidden" style="width:0px;height:0px;" name="appid" value="{{p_appinfo['appid']}}">
+            <input type="text" id="stat_app_y" class="hidden" style="width:0px;height:0px;" name="y" value="{{p_date.year}}">
+            <input type="text" id="stat_app_m" class="hidden" style="width:0px;height:0px;" name="m" value="{{p_date.month}}">
+            <input type="text" id="stat_app_d" class="hidden" style="width:0px;height:0px;" name="d" value="{{p_date.day}}">
+            <input type="text" id="rid_app_per" class="hidden" style="width:0px;height:0px;" name="per" value="h">
+            <table class="table">
+            <thead>
+                <tr>
+                    <th width="215px">列表名</th>
+                    <th width="80px">添加时间</th>
+                    <th width="40px">平台</th>
+                    <th width="30px" class="rgdata">链接</th>
+                    <th class="rgdata">浏览次数</th>
+                    <th class="rgdata">图片点击</th>
+                    <th class="rgdata">进入链接</th>
+                    <th class="rgdata">完成购买</th>
+                    <th class="rgdata">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if p_appinfo != None %}
+                {% set t_links = p_appinfo['links'] %}
+                {% set t_st_all = p_st_all.get('all') %}
+                {% set t_st_all_v = 0 %}
+                {% set t_st_all_c = 0 %}
+                {% set t_st_all_l = 0 %}
+                {% set t_st_all_b = 0 %}
+                {% if t_st_all %}
+                    {% set t_st_all_v = t_st_all['v'] %}
+                    {% set t_st_all_c = t_st_all['c'] %}
+                    {% set t_st_all_l = t_st_all['l'] %}
+                    {% set t_st_all_b = t_st_all['b'] %}
+                {% end %}
+                <tr>
+                    <td>{{p_appinfo['name']}}</td>
+                    <td>{{p_appinfo['atime']}}</td>
+                    <td>{{p_appinfo['pf']}}</td>
+                    <td class="rgdata">{{len(t_links)}}</td>
+                    <td class="rgdata">{{t_st_all_v}}</td>
+                    <td class="rgdata">{{t_st_all_c}}</td>
+                    <td class="rgdata">{{t_st_all_l}}</td>
+                    <td class="rgdata">{{t_st_all_b}}</td>
+                    <td class="rgdata"><button type="submit" id="stat_app_submit" >图表</button></td>
+                </tr>
+                {% end %}
+            </tbody>
+            </table>
+        </form>
+        <form id="stat_url_form">
+            {% raw xsrf_form_html() %}
+            <input type="text" id="stat_url_appid" class="hidden" style="width:0px;height:0px;" name="appid" value="{{p_appinfo['appid']}}">
+            <input type="text" id="stat_url_y" class="hidden" style="width:0px;height:0px;" name="y" value="{{p_date.year}}">
+            <input type="text" id="stat_url_m" class="hidden" style="width:0px;height:0px;" name="m" value="{{p_date.month}}">
+            <input type="text" id="stat_url_d" class="hidden" style="width:0px;height:0px;" name="d" value="{{p_date.day}}">
+            <input type="text" id="rid_url_urlid" class="hidden" style="width:0px;height:0px;" name="urlid" value="0">
+            <input type="text" id="rid_url_per" class="hidden" name="per" value="h">
+            <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th style="width:150px">图片</th>
+                    <th style="width:250px">标题</th>
+                    <th class="rgdata">浏览次数</th>
+                    <th class="rgdata">图片点击</th>
+                    <th class="rgdata">进入链接</th>
+                    <th class="rgdata">完成购买</th>
+                    <th class="rgdata">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if p_appinfo != None %}
+                {% for i in p_appinfo['links'] %}
+                {% set t_url = i['url'] %}
+                {% set t_urlid = i['urlid'] %}
+                {% set t_urlitem = p_urlitems.get(t_urlid) %}
+                <tr>
+                    {% if not t_urlitem %}
+                    <td style="width:120px"><img src="/img/sdk/nopic_200.png" class="img-polaroid" height="80px" style="height:80px;" ></td>
+                    <td>{{p_msg['err_top']}}</td>
+                    <td class="rgdata">--</td>
+                    <td class="rgdata">--</td>
+                    <td class="rgdata">--</td>
+                    <td class="rgdata">--</td>
+                    <td class="rgdata">--</td>
+                    {% else %}
+                    {% set t_pic_url = t_urlitem['pic_url'] %}
+                    {% set t_title = t_urlitem['title'] %}
+                    {% set t_st_all = p_st_all.get( t_urlid ) %}
+                    {% set t_st_all_c = 0 %}
+                    {% set t_st_all_l = 0 %}
+                    {% set t_st_all_b = 0 %}
+                    {% if t_st_all %}
+                        {% set t_st_all_c = t_st_all['c'] %}
+                        {% set t_st_all_l = t_st_all['l'] %}
+                        {% set t_st_all_b = t_st_all['b'] %}
+                    {% end %}
+                    <td style="width:120px"><img src="{{t_pic_url}}" class="img-polaroid" height="100px" style="height:100px;" ></td>
+                    <td>{{t_title}}</td>
+                    <td class="rgdata">--</td>
+                    <td class="rgdata">{{t_st_all_c}}</td>
+                    <td class="rgdata">{{t_st_all_l}}</td>
+                    <td class="rgdata">{{t_st_all_b}}</td>
+                    <td class="rgdata"><button type="submit" onclick="url_stat_click('{{t_urlid }}','{{t_title}}')">图表</button></td>
+                    {% end %}
+                </tr>
+                {% end %}
+                {% end %}
+                <tr> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>
+            </tbody>
+            </table>
+        </form>
+    </div>
+</div>
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% end %}
+
+{% block footer %}
+{% end %}
+

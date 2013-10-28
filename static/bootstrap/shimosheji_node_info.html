@@ -1,0 +1,181 @@
+<table class="table">
+<script type="text/javascript">
+$(document).ready(function(){
+    $('#nodeadd_form').submit(function() { 
+        var new_title = $('#rid_add_title').val();
+        if( new_title.length > 20 ){
+            alert( '标题请控制在20字以内' );
+            return;
+        }
+        var new_desc = $('#rid_add_desc').val();
+        if( new_desc.length > 100 ){
+            alert( '简介请控制在100字以内' );
+            return;
+        }
+        var options = { 
+            url      : '{{p_url["api_nodeadd"]}}',
+            type     : 'POST', 
+            dataType : 'json',
+            data     : {'_xsrf':getCookie('_xsrf'),'appid':{{p_appinfo['appid']}},'new_title':new_title,'new_desc':new_desc},
+            success  : function(data){
+                $('#nodeadd_msg').text(data.msg);
+                $('#nodeadd_submit').attr('disabled',false);
+                if( data.op==true){
+                    $('#nodeadd_submit').text('添加成功');
+                    reload();
+                }else{
+                    $('#nodeadd_submit').text('添加');
+                }
+            },
+            error    : function(){
+                $('#nodeadd_submit').text('添加');
+                $('#nodeadd_msg').text('p_msg["err_500"]');
+                $('#nodeadd_submit').attr('disabled',false);
+            },
+            beforeSubmit: function(formData, jqForm, options){
+                $('#nodeadd_submit').text('正在添加...');
+                $('#nodeadd_submit').attr('disabled',true);
+            },
+        }; 
+        $('#nodeadd_form').ajaxSubmit(options); 
+        return false;
+    });
+});
+function hidenodeadd(){
+    $('#nodeadd_collapse').collapse('hide');
+}
+function node_edit_click(nodeid) {
+    {% if p_appinfo != None %}
+    $('#rid_edit_'+nodeid+'_title').val($('#rid_done_'+nodeid+'_title').text());
+    $('#rid_edit_'+nodeid+'_desc').val($('#rid_done_'+nodeid+'_desc').text());
+    $('#rid_'+nodeid+'_edit').show();
+    $('#rid_'+nodeid+'_done').hide();
+    {% end %}
+}
+function node_edit_ok(nodeid){
+    {% if p_appinfo != None %}
+    var new_title = $('#rid_edit_'+nodeid+'_title').val();
+    if( new_title.length > 20 ){
+        alert( '标题请控制在20字以内' );
+        return;
+    }
+    var new_desc = $('#rid_edit_'+nodeid+'_desc').val();
+    if( new_desc.length > 100 ){
+        alert( '简介请控制在100字以内' );
+        return;
+    }
+    $.ajax({
+        url      : '{{p_url["api_nodeupdate"]}}',
+        type     : 'POST',
+        data     : {'_xsrf':getCookie('_xsrf'),'appid':{{p_appinfo['appid']}},'nodeid':nodeid,'new_title':new_title,'new_desc':new_desc},
+        dataType : 'json',
+        timeout  : 5000,
+        success  : function(data){
+            reload();
+            /*
+            if( data.op==true){
+            }else{
+            }
+            */
+        },
+        error    : function(){
+            $('#rid_'+nodeid+'_done').show();
+            $('#rid_'+nodeid+'_edit').hide();
+            reload();
+        },
+        beforeSubmit: function(formData, jqForm, options){
+            //$('#nodeadd_url').attr('disabled',true);
+        },
+    });
+    {% end %}
+}
+function node_edit_cancel(nodeid){
+    $('#rid_'+nodeid+'_done').show();
+    $('#rid_'+nodeid+'_edit').hide();
+}
+</script>
+<thead>
+    <tr>
+        <th style="width:20px"></th>
+        <th style="width:110px">图片</th>
+        <th style="width:240px">标题</th>
+        <th style="max-width:300px">简介</th>
+        <th style="width:80px">操作</th>
+        <th style="width:20px"></th>
+
+    </tr>
+</thead>
+<tbody>
+    {% if p_appinfo != None %}
+    <tr>
+        <td class="rgcenter" colspan=8>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#nodeadd_collapse"> + 添加内容 </a>
+                </div>
+                <div id="nodeadd_collapse" class="accordion-body collapse">
+                <form id="nodeadd_form">
+                    {% raw xsrf_form_html() %}
+                    <div style="margin-left:0px;">
+                        <table class="table rgnodeadd">
+                        <tbody>
+                        <tr>
+                            <td style="width:12px"></td>
+                            <td style="max-width:110px"><img src="/img/shimosheji/nopic_200.png" class="img-polaroid" height="100px" style="height:100px;" ></td>
+                            <td style="max-width:240px;width:240px;word-wrap:break-word"><textarea id="rid_add_title" ></textarea></td>
+                            <td style="max-width:360px;width:360px;word-wrap:break-word"><textarea id="rid_add_desc"></textarea></td>
+                            <td style="max-width:80px">
+                                <button type="submit" id="nodeadd_submit" class="rgbtn" style="width:80px">添加</button>
+                            </td>
+                            <td style="width:12px"></td>
+                        </tr>
+                        </tbody>
+                        </table>
+                    </div>
+                    <!-- <input type="text" class="input-block-level" id="nodeadd_url" name="url"> -->
+                    <a style="width:80px;" href="javascript:void(0)" onclick="hidenodeadd()">取消</a>
+                </form>
+                </div>
+            </div>
+        </td>
+    </tr>
+    {% for i in p_appinfo['nodes'] %}
+    {% set t_nodeid = i['nodeid'] %}
+    {% set t_title = i['title'] %}
+    {% set t_desc = i['desc'] %}
+    {% set t_item = p_items[t_nodeid] %}
+    {% set t_pic_url = t_item['imgs'][0]['url'] %}
+    {% set t_imgs  = t_item['imgs'] %}
+    {% set t_imgs_arr = [ '\''+t_img['url']+'\'' for t_img in t_imgs ] %}
+    <tr id="rid_{{t_nodeid}}_done">
+        <td style="width:20px"></td>
+        <td style="max-width:110px"><img src="{{t_pic_url}}" style="cursor:pointer;" class="img-polaroid" height="100px" style="height:100px;" onclick="ImgClick('{{t_title}}','{{t_nodeid}}',new Array({{','.join(t_imgs_arr)}}))" ></td>
+        <td style="max-width:240px;word-wrap:break-word"><span id="rid_done_{{t_nodeid}}_title">{{t_title}}</span></td>
+        <td style="max-width:300px;word-wrap:break-word"><span id="rid_done_{{t_nodeid}}_desc">{{t_desc}}</span></td>
+        <td style="max-width:80px">
+            <div><a href="javascript:void(0)" onclick="node_edit_click({{t_nodeid}})">编辑</a><img src="/img/shimosheji/up.png" class="img-circle" style="width:20px;height:20px;margin-left:15px;cursor:pointer;" onclick="node_sort_click({{t_nodeid}},false)"></div>
+            <div style="height:10px"></div>
+            <div><a href="javascript:void(0)" onclick="node_del_click({{t_nodeid}},'{{t_pic_url}}','{{t_title}}')">删除</a><img src="/img/shimosheji/down.png" class="img-circle" style="width:20px;height:20px;margin-left:15px;cursor:pointer;" onclick="node_sort_click({{t_nodeid}},true)"></div>
+        </td>
+        <td style="width:20px"></td>
+    </tr>
+    <tr id="rid_{{t_nodeid}}_edit" style="display:none;">
+        <td style="width:20px"></td>
+        <td style="max-width:110px">
+            <div class="rgimgbox" style="width:100px;height:100px;"><div class="rgimgbox_pos"><div>
+            <img src="{{t_pic_url}}" onload="DrawImage(this,100,100)" onclick="ImgClick('{{t_title}}','{{t_nodeid}}',new Array({{','.join(t_imgs_arr)}}))" />
+            </div></div></div>
+        </td>
+        <td style="max-width:240px;width:240px;word-wrap:break-word"><textarea id="rid_edit_{{t_nodeid}}_title"></textarea></td>
+        <td style="max-width:360px;width:360px;word-wrap:break-word"><textarea id="rid_edit_{{t_nodeid}}_desc"></textarea></td>
+        <td style="max-width:80px">
+            <div><a href="javascript:void(0)" onclick="node_edit_ok({{t_nodeid}})">确定</a></div>
+            <div><a href="javascript:void(0)" onclick="node_edit_cancel({{t_nodeid}})">取消</a></div>
+        </td>
+        <td style="width:20px"></td>
+    </tr>
+    {% end %}
+    {% end %}
+    <tr> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>
+</tbody>
+</table>

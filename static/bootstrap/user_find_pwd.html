@@ -1,0 +1,93 @@
+{% extends "user_base.html" %}
+{% block head %}
+<title>密码找回</title>
+<style type="text/css">
+.rgnav {
+    display: none;
+}
+</style>
+<script type="text/javascript"> require(['md5']); </script>
+<script type="text/javascript">
+require(['jquery','domReady!'], function(doc){
+    $('#findpwd_form').submit(function() { 
+        $('#findpwd_email').val($.trim($('#findpwd_email').val()).toLowerCase());
+        $('#findpwd_email').val($('#findpwd_email').val().replace('﹫', '@'));
+        $('#findpwd_email').val($('#findpwd_email').val().replace('。', '.'));
+        var findpwd_email= $('#findpwd_email').val();
+        if(findpwd_email.length <= 0 ){
+            $('#findpwd_msg').text('邮箱不能为空');
+            return false;
+        }
+        var emailPat =  /^([a-zA-Z0-9_-]|\.)+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
+        var matchArray = findpwd_email.match(emailPat);
+        if(matchArray==null){
+            $('#findpwd_msg').text('邮箱格式有误');
+            return false;
+        }
+        var options = { 
+            url:'{{p_url["user_api_findpwd"]}}',
+            type:'POST', 
+            dataType: 'json',
+            success: function(data){
+                $('#findpwd_msg').text(data.msg);
+                if( data.op==true){
+                    $('#findpwd_submit').text('发送邮件成功');
+                }else{
+                    $('#findpwd_submit').text('重置密码');
+                }
+            },
+            error: function(data){
+                $('#findpwd_msg').text(data.msg);
+                $('#findpwd_submit').text('重置密码');
+                $('#findpwd_email').attr('disabled',false);
+                $('#findpwd_submit').attr('disabled',false);
+            },
+            beforeSubmit: function(formData, jqForm, options){
+                $('#findpwd_msg').text('');
+                $('#findpwd_submit').text('正在重置密码...');
+                $('#findpwd_email').attr('disabled',true);
+                $('#findpwd_submit').attr('disabled',true);       
+            },
+        }; 
+        $('#findpwd_form').ajaxSubmit(options); 
+        return false;
+    });
+});
+</script>
+{% end %}
+
+{% block location %}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block body %}
+<div class="rgbase">
+    <form class="rgopbar" id="findpwd_form">
+        {% raw xsrf_form_html() %}
+        <div class="row-fluid" >
+            <div class="span3 offset3" style="height:20px;padding-top:5px;"><label class="rglabel text-error" id="findpwd_msg" style="margin-left:20px;"></label></div>
+        </div>
+        <div class="row-fluid" >
+            <div class="span4 offset3">
+                <div class="input-prepend" style="margin-left:20px;">
+                    <span class="add-on" style="height:33px;background-color:#ffffff;border-radius: 2px 0 0 2px;"><img src="/img/sdk/user.gif" style="width:33px;height:33px;"></span>
+                    <input style="width:250px;height:33px;border-radius: 0 2px 2px 0;border-left:0px;" type="text" id="findpwd_email" name="email" placeholder="邮箱">
+                </div>
+            </div>
+            <div class="span2"> <button type="submit" id="findpwd_submit" class="rgbtn" style="margin:0 0 0 5px;">重置密码</button> </div>
+        </div>
+        <div class="row-fluid" >
+            <div class="span3 offset3" style="height:20px;padding-top:5px;"></div>
+        </div>
+    </form>
+</div> <!-- /rgbase-->
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% end %}
+
+{% block footer %}
+{% end %}
+

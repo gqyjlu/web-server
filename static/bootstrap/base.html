@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="googlebot" content="noimageindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="description" content="">
+<meta name="author" content="">
+
+<META HTTP-EQUIV="pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+<META HTTP-EQUIV="expires" CONTENT="Wed, 26 Feb 1997 08:21:57 GMT">
+
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+<style type="text/css">
+body {
+    padding-top: 0px;
+    padding-bottom: 40px;
+    background-color: #e1e2dd;
+}
+/* Custom container */
+.rgbase {
+    margin: 0px auto ;
+    min-width: 980px;
+    max-width: 980px;
+}
+.rgmain {
+    background-color: #000000;
+    padding: 20px 20px 20px 20px;
+}
+.rgmain .breadcrumb {
+    padding:0px;
+    background-color:#ffffff;
+}
+</style>
+<script src="http://l.tbcdn.cn/apps/top/x/sdk.js?appkey=21597971"></script>
+<script src="/js/require.js"></script>
+<script type="text/javascript">
+    require.config({
+        paths: {
+            jquery: '/js/jquery-1.9.1.min',
+            jquery_form: '/js/jquery.form',
+            bootstrap: '/js/bootstrap.min',
+            domReady: '/js/domReady'
+        },
+        shim: {
+            'jquery_form' : ['jquery'],
+            'bootstrap' : ['jquery'],
+            'domReady' : ['jquery']
+        }
+    });
+    require(['jquery','jquery_form','bootstrap']);
+    function getCookie(name) {
+        var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        return r ? r[1] : undefined;
+    }
+</script>
+
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+<![endif]-->
+
+{% block head %}
+{% end %}
+
+</head>
+<body>
+
+{% block location %}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block body %}
+{% end %}
+
+{% block footer %}
+{% end %}
+
+</body>
+</html>	

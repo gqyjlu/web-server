@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="googlebot" content="noimageindex">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="description" content="">
+<meta name="author" content="">
+
+<META HTTP-EQUIV="pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache, must-revalidate">
+<META HTTP-EQUIV="expires" CONTENT="Wed, 26 Feb 1997 08:21:57 GMT">
+
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/bootstrap-responsive.min.css" rel="stylesheet">
+
+<!-- Le styles -->
+<style type="text/css">
+body {
+    padding-top: 0px;
+    padding-bottom: 20px;
+    background:url(/img/shimosheji/bg.jpg);
+}
+/* Custom container */
+.rgcolorwhite {
+    color: #ffffff;
+}
+.rgcolorblack {
+    color: #000000;
+}
+.rgfont12 {
+    font-size: 12px;
+}
+.rgfont14 {
+    font-size: 14px;
+}
+.rgfont16 {
+    font-size: 16px;
+}
+.rgfontT {
+    font-family: "Tahoma";
+}
+.rgimgbox {
+    background-color:#f0f0f0;
+    position:relative;
+    vertical-align:middle;
+    text-align:center;
+}
+.rgimgbox_pos {
+    position:absolute;
+}
+.rgimgbox_pos img {
+    position:absolute;
+    vertical-align:middle;
+    left:0px;
+    top:0px;
+    margin-top:0px;
+    margin-left:0px;
+}
+.rglabel {
+    cursor:text;
+    line-height: 20px;
+}
+.rgbtn {
+    width: 140px;
+    height: 42px;
+    display: inline-block;
+    padding: 4px 12px;
+    margin-bottom: 0;
+    font-size: 16px;
+    line-height: 20px;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+    background-color: #78bd16;
+    border: 0px #78bd16;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffffff',endColorstr='#ffe6e6e6',GradientType=0);
+    filter: progid:DXImageTransform.Microsoft.gradient(enabled=false);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+    -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.2),0 1px 2px rgba(0,0,0,0.05);
+    box-shadow: inset 0 0 0 0,0 1px 2px rgba(0,0,0,0.05);
+}
+.rgbtn:hover {
+    background-color: #96d242;
+}
+.rgbtn-large {
+    height: 50px;
+    width: 220px;
+    font-size: 18px;
+}
+.rginput {
+    width: 200px;
+    height: 42px;
+    background-color: #43454d;
+}
+.rglink {
+    color: #17afd8;
+}
+.rglink:hover {
+    color: #17afd8;
+}
+
+
+
+
+.rgbase {
+    margin: 0px auto ;
+    min-width: 980px;
+    max-width: 980px;
+}
+.rgtop {
+    height:25px;
+    padding-top:5px;
+    background:url(/img/shimosheji/top_bg.png);
+}
+.rgtop a {
+    color:white;
+}
+.rgtop li {
+    color:white;
+}
+.rgtop a:hover {
+    color:white;
+}
+.rgnav {
+    height:60px;
+    padding-top:20px;
+    background-color: #ffffff;
+}
+.rgfooter {
+    height:60px;
+    padding-top:20px;
+}
+
+
+
+
+.rgsubnav {
+    margin: 10px 0px 10px 0px;
+}
+.rgsubnav .active a {
+    background-color: #ffffff;
+}
+.rgsubnav .active a:hover {
+    background-color: #ffffff;
+}
+</style>
+<script src="http://l.tbcdn.cn/apps/top/x/sdk.js?appkey=21597971"></script>
+<script src="/js/require.js"></script>
+<script type="text/javascript">
+    require.config({
+        paths: {
+            jquery: '/js/jquery-1.9.1.min',
+            jquery_form: '/js/jquery.form',
+            jquery_lazyload: '/js/jquery.lazyload',
+            jquery_showLoading: '/js/jquery.showLoading.min',
+            bootstrap: '/js/bootstrap.min',
+            domReady: '/js/domReady',
+            md5: '/js/md5-min',
+            least: '/js/least.min',
+            rgraph_common_core: '/js/RGraph/RGraph.common.core',
+            rgraph_common_dynamic: '/js/RGraph/RGraph.common.dynamic',
+            rgraph_common_key: '/js/RGraph/RGraph.common.key',
+            rgraph_common_tooltips: '/js/RGraph/RGraph.common.tooltips',
+            rgraph_common_effects: '/js/RGraph/RGraph.common.effects',
+            rgraph_drawing_rect: '/js/RGraph/RGraph.drawing.rect',
+            rgraph_line: '/js/RGraph/RGraph.line'
+        },
+        shim: {
+            'jquery_form' : ['jquery'],
+            'jquery_lazyload' : ['jquery'],
+            'jquery_showLoading' : ['jquery'],
+            'bootstrap' : ['jquery'],
+            'domReady' : ['jquery'],
+            'least' : ['jquery']
+        }
+    });
+    require(['jquery','jquery_form','bootstrap']);
+    function getCookie(name) {
+        var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        return r ? r[1] : undefined;
+    }
+</script>
+<script language="JavaScript"> 
+function DrawImage(ImgD,iwidth,iheight){ 
+    var urlPat =  /_rgpre.gif$/;
+    var matchArray = ImgD.src.match(urlPat);
+    if(matchArray!=null){
+        return;
+    }
+    var cut_width = 0;
+    var cut_height = 0;
+    if(ImgD.width>0 && ImgD.height>0){
+        if(ImgD.width/ImgD.height >= iwidth/iheight){ //横向比例超标(胖子型)
+            cut_width=Math.round(((ImgD.width*iheight)/ImgD.height-iwidth)/2);
+            ImgD.height=iheight;
+            ImgD.style.clip="rect(0px "+(iwidth+cut_width)+"px "+iheight+"px "+cut_width+"px)";
+            ImgD.style.marginLeft="-"+cut_width+"px";
+        }else{  //纵向比例超标(瘦子型)
+            cut_height=Math.round(((ImgD.height*iwidth)/ImgD.width-iheight)/2);
+            ImgD.width=iwidth;
+            ImgD.style.clip="rect("+cut_height+"px "+iwidth+"px "+(iheight+cut_height)+"px 0px)";
+            ImgD.style.marginTop="-"+cut_height+"px";
+        }
+        ImgD.style.display="block";
+    } 
+}
+</script>
+
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+<script src="//cdnjs.bootcss.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"></script>
+<![endif]-->
+
+{% block head %}
+{% end %}
+
+</head>
+<body>
+
+<div class="rgtop">
+    <div class="rgbase">
+        <ul class="inline pull-right">
+            <li><a href="{{p_url['host_admin']}}">管理员入口</a></li>
+            <li><a href="{{p_url['host_admin']}}">中文</a></li>
+            <li>|</li>
+            <li><a href="{{p_url['host_admin']}}">English</a></li>
+        </ul>
+    </div>
+{% block top %}
+{% end %}
+</div>
+<div class="rgnav navbar navbar-static-top navbar-inverse" style="">
+{% block nav %}
+{% end %}
+</div>
+{% block body %}
+{% end %}
+<div class="rgfooter rgbase">
+    <ul class="inline pull-left" style="margin-left:20px;">
+        <li style="padding-left:0px;"><a href={{p_url['guest_main']}}><img style="width:170px;height:30px;" src="/img/shimosheji/logo_170.png"></a></li>
+    </ul>
+    <ul class="footer pull-right" style="margin-right:20px;">
+        <li><p class="muted rgfont14">地址：北京市朝阳区高碑店高井164号。电话：010-65447156。</p></li>
+        <li><p class="muted rgfont14">本站所有内容版权归石墨设计所有 北京石座科技有限公司 &copy;2013 京ICP备13023199</p></li>
+    </ul>
+{% block footer %}
+{% end %}
+</div> <!-- /rgcontainer-->
+
+</body>
+</html>	

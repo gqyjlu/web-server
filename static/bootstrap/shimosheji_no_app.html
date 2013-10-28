@@ -1,0 +1,40 @@
+{% extends "shimosheji_base_admin.html" %}
+{% block head %}
+<title>羴羴&middot;石墨设计</title>
+<script type="text/javascript">
+require(['jquery','domReady!'], function(doc){
+    $('#newapp_btn').click(function() { 
+        location.href = '{{p_url["host_appadd"]}}';
+    });
+});
+</script>
+{% end %}
+
+{% block location %}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block body %}
+<div class="rgbase">
+    <ul class="nav nav-pills rgsubnav">
+        <li class="active"><a>管理后台</a></li>
+    </ul>
+    <div class="rgmain">
+        <div class="rgfirst">
+            <h4>还没有案例，立即创建第一个案例组</h5>
+            <h5 class="muted">添加案例到首页，可以轻松对页面内容进行编辑，查看完整数据分析</h5>
+            <button id="newapp_btn" class="btn btn-success rgbtn-large">创建第一个案例组</button>
+        </div>
+    </div>
+</div>
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% end %}
+
+{% block footer %}
+{% end %}
+

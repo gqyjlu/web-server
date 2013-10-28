@@ -1,0 +1,363 @@
+{% extends "shimosheji_base_admin.html" %}
+{% block head %}
+<title>羴羴&middot;石墨设计</title>
+<style type="text/css">
+.rgpopview {
+    position: relative;
+    margin: 30px auto 0px auto;
+    padding: 20px;
+    background-color: white;
+    text-align: center;
+}
+.rgpopbox {
+    background-color:#ffffff;
+}
+.modal.fade {
+    top: -100px;
+    left: 0;
+}
+.modal.fade.in {
+    top: 0;
+    left: 0;
+    height: 100%;
+}
+.modal {
+    width: 100%;
+    margin-left: 0px;
+    background-color: transparent;
+    border: 0px solid;
+    border: 0px solid;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    outline: 0;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 rgba(0,0,0,0.3);
+    -moz-box-shadow: 0 0 0 rgba(0,0,0,0.3);
+    box-shadow: 0 0 0 rgba(0,0,0,0.3);
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding-box;
+    background-clip: padding-box;
+}
+.modal-body {
+    max-height: 100%;
+}
+.modal-body {
+    max-height: 100%;
+}
+.close {
+    opacity:1.0;
+}
+.close:hover {
+    opacity:1.0;
+}
+.close:hover a {
+    background:url(/img/shimosheji/X2.png);
+}
+.close:hover a img{
+    visibility:hidden;
+}
+</style>
+<script type="text/javascript"> require(['jquery_lazyload','least']); </script>
+<script type="text/javascript">
+require(['jquery','domReady!'], function(doc){
+    reload();
+});
+function reload() { 
+    {% if p_appinfo != None %}
+    var empty_pfx = '<table class="table"> <thead> <tr> <th style="width:20px"></th> <th style="width:110px">图片</th> <th style="width:240px">标题</th> <th style="max-width:300px">简介</th> <th style="width:80px">操作</th> <th style="width:20px"></th> </tr> </thead>'
+    $('#adminbox').html( empty_pfx+'<tbody><tr><td class="rgcenter" colspan=8><h5>正在加载数据 ...</h5></td></tr></tbody></table>' )
+    $.ajax({
+        url      : '{{p_url["host_nodeinfo"]}}',
+        type     : 'POST',
+        data     : {'_xsrf':getCookie('_xsrf'),'appid':{{p_appinfo['appid']}}},
+        dataType : 'html',
+        timeout  : 5000,
+        error    : function(xmlHttpRequest,textStatus,errorThrown){
+                        $('#adminbox').html( empty_pfx+'<tbody><tr onclick="reload()"><td class="rgcenter" colspan=8><h5>加载超时，点击刷新</h5></td></tr></tbody></table>' )
+                   },
+        success  : function(result){
+                        $('#adminbox').html( result );
+                    }
+    });
+    {% end %}
+}
+function node_del_click(nodeid,pic_url,title){
+    {% if p_appinfo != None %}
+    $('#nodedel_modal').attr('nodeid',nodeid);
+    $('#nodedel_pic').attr('src',pic_url);
+    $('#nodedel_title').text( title );
+    $('#nodedel_modal').modal('toggle');
+    {% end %}
+}
+function node_del_ok(){
+    {% if p_appinfo != None %}
+    $('#nodedel_modal').modal('hide');
+    $.ajax({
+        url      : '{{p_url["api_nodedel"]}}',
+        type     : 'POST',
+        data     : {'_xsrf':getCookie('_xsrf'),'appid':{{p_appinfo['appid']}},'nodeid':$('#nodedel_modal').attr('nodeid')},
+        dataType : 'json',
+        timeout  : 5000,
+        error    : function(xmlHttpRequest,textStatus,errorThrown){
+                        if(xmlHttpRequest.readyState == 0 || xmlHttpRequest.status == 0){
+                            reload();
+                        }else{
+                            alert('{{p_msg["err_timeout"]}}');
+                        }
+                   },
+        success  : function(result){
+                        if( result.op==true){
+                            reload();
+                        }else{
+                            alert('{{p_msg["err_timeout"]}}');
+                        }
+                    }
+    });
+    {% end %}
+}
+function node_del_cancel(){
+    {% if p_appinfo != None %}
+    $('#nodedel_modal').modal('hide');
+    {% end %}
+}
+function node_sort_click(nodeid,goingdown){
+    {% if p_appinfo != None %}
+    p = {};
+    if( goingdown ){
+        p = {'_xsrf':getCookie('_xsrf'),'appid':{{p_appinfo['appid']}},'nodeid':nodeid,'goingdown':goingdown};
+    } else {
+        p = {'_xsrf':getCookie('_xsrf'),'appid':{{p_appinfo['appid']}},'nodeid':nodeid};
+    }
+    $.ajax({
+        url      : '{{p_url["api_nodesort"]}}',
+        type     : 'POST',
+        data     : p,
+        dataType : 'json',
+        timeout  : 5000,
+        error    : function(xmlHttpRequest,textStatus,errorThrown){
+                        if(xmlHttpRequest.readyState == 0 || xmlHttpRequest.status == 0){
+                            reload();
+                        }else{
+                            alert('{{p_msg["err_timeout"]}}');
+                        }
+                   },
+        success  : function(result){
+                        if( result.op==true){
+                            reload();
+                        }else{
+                            alert('{{p_msg["err_timeout"]}}');
+                        }
+                    }
+    });
+    {% end %}
+}
+</script>
+<script type="text/javascript">
+var modal_nodeid = null;
+var modal_imgs = null;
+var modal_img_index = 0;
+function ImgClick(title,nodeid,imgs){ 
+    Pop(title,nodeid,imgs);
+    $('#imgclick_modal').modal('toggle');
+}
+function Pop(title,nodeid,imgs){ 
+    modal_nodeid = nodeid;
+    modal_imgs = imgs;
+    var h = '';
+    if( imgs.length >= 1 ){
+        ImgIndexClick(0,imgs[0]);
+        for(var i=0;i<imgs.length;i++){
+            h = h
+                + '<li style="padding-left:0px;padding-right:10px;">'
+                + '    <div class="rgimgbox" style="width:60px;height:60px;"><div class="rgimgbox_pos" style="width:60px;height:60px;border:1px #eaeaea solid;"><div>'
+                + '    <img data-original="' + imgs[i] + '" src="/img/effects/black_rgpre.gif" onload="DrawImage(this,60,60)" style="cursor:pointer;" onclick="ImgIndexClick('+i+',\'' + imgs[i] + '\')" />'
+                + '    </div></div></div>'
+                + '</li>';
+        }
+    }
+    $('#ridpopindex').html(h);
+    $('#ridpopindex').least({random:false,lazyload:false,scrollToGallery:false});
+}
+function ImgIndexClick(index,url){ 
+    modal_img_index = index;
+    var h = ''
+            + '<li style="padding-left:0px;">'
+            + '    <div class="rgimgbox" style="width:301px;height:300px;"><div class="rgimgbox_pos" style="width:301px;height:300px;"><div>'
+            + '    <img data-original="' + url + '" src="/img/effects/black_rgpre.gif" onload="DrawImage(this,300,300)" />'
+            + '    </div></div></div>'
+            + '</li>';
+    $('#ridpopmain').html(h);
+    $('#rid_url_edit').val(url);
+    $('#ridpopmain').least({random:false,lazyload:false,scrollToGallery:false});
+}
+function ImgChange(url){ 
+    $.ajax({
+        url      : '{{p_url["api_nodeimgupdate"]}}',
+        type     : 'POST',
+        data     : {'_xsrf':getCookie('_xsrf'),'appid':{{p_appinfo['appid']}},'nodeid':modal_nodeid,'index':modal_img_index,'url':url},
+        dataType : 'json',
+        timeout  : 5000,
+        error    : function(xmlHttpRequest,textStatus,errorThrown){
+                        if(xmlHttpRequest.readyState == 0 || xmlHttpRequest.status == 0){
+                            $('#imgclick_modal').modal('toggle');
+                            reload();
+                        }else{
+                            alert('{{p_msg["err_timeout"]}}');
+                        }
+                   },
+        success  : function(result){
+                        if( result.op==true){
+                            $('#imgclick_modal').modal('toggle');
+                            reload();
+                        }else{
+                            alert('{{p_msg["err_timeout"]}}');
+                        }
+                    }
+    });
+}
+function ImgAdd(url){ 
+    $.ajax({
+        url      : '{{p_url["api_nodeimgadd"]}}',
+        type     : 'POST',
+        data     : {'_xsrf':getCookie('_xsrf'),'appid':{{p_appinfo['appid']}},'nodeid':modal_nodeid,'url':url},
+        dataType : 'json',
+        timeout  : 5000,
+        error    : function(xmlHttpRequest,textStatus,errorThrown){
+                        if(xmlHttpRequest.readyState == 0 || xmlHttpRequest.status == 0){
+                            $('#imgclick_modal').modal('toggle');
+                            reload();
+                        }else{
+                            alert('{{p_msg["err_timeout"]}}');
+                        }
+                   },
+        success  : function(result){
+                        if( result.op==true){
+                            $('#imgclick_modal').modal('toggle');
+                            reload();
+                        }else{
+                            alert('{{p_msg["err_timeout"]}}');
+                        }
+                    }
+    });
+}
+function ImgDel(){ 
+    $.ajax({
+        url      : '{{p_url["api_nodeimgdel"]}}',
+        type     : 'POST',
+        data     : {'_xsrf':getCookie('_xsrf'),'appid':{{p_appinfo['appid']}},'nodeid':modal_nodeid,'index':modal_img_index},
+        dataType : 'json',
+        timeout  : 5000,
+        error    : function(xmlHttpRequest,textStatus,errorThrown){
+                        if(xmlHttpRequest.readyState == 0 || xmlHttpRequest.status == 0){
+                            $('#rid_url_add').val('');
+                            $('#imgclick_modal').modal('toggle');
+                            reload();
+                        }else{
+                            alert('{{p_msg["err_timeout"]}}');
+                        }
+                   },
+        success  : function(result){
+                        if( result.op==true){
+                            $('#rid_url_add').val('');
+                            $('#imgclick_modal').modal('toggle');
+                            reload();
+                        }else{
+                            alert('{{p_msg["err_timeout"]}}');
+                        }
+                    }
+    });
+}
+</script>
+{% end %}
+
+{% block location %}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block body %}
+<!-- Modal -->
+<div id="nodedel_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header hidden"> </div>
+    <div class="modal-body">
+        <div class="rgpopview" style="width:600px;height:450px;">
+            <div class="close" style="cursor:pointer;position:absolute;width:36px;height:36px;top:-18px;left:-18px;" data-dismiss="modal" aria-hidden="true">
+                <a href="javascript:void(0);" style="display:block;widtH:36px;height:36px;text-decoration:none;"><img src="/img/shimosheji/X1.png"></img></a>
+            </div>
+            <h4 class="muted">删除此链接？</h4>
+            <div class="thumbnails" style="margin:0 auto;width:400px;">
+                <div class="thumbnail">
+                    <img id="nodedel_pic" class="img-rounded" style="height:200px;">
+                    <div class="caption">
+                        <h6 class="muted">标题</h6>
+                        <p id="nodedel_title"></p>
+                    </div>
+                </div>
+            </div>
+            <p><br>链接删除后,该商品将不再展示在客户端或者web页上，是否删除？</p>
+            <a href="javascript:void(0)" onclick="node_del_cancel()" class="btn">取消</a>
+            <a href="javascript:void(0)" onclick="node_del_ok()" class="btn btn-primary btn-success">删除</a>
+        </div>
+    </div>
+    <div class="modal-footer hidden"> </div>
+</div>
+<!-- Modal -->
+<div id="imgclick_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-header hidden"> </div>
+    <div class="modal-body">
+        <div class="rgpopview" style="width:600px;height:550px;">
+            <div class="close" style="cursor:pointer;position:absolute;width:36px;height:36px;top:-18px;left:-18px;" data-dismiss="modal" aria-hidden="true">
+                <a href="javascript:void(0);" style="display:block;widtH:36px;height:36px;text-decoration:none;"><img src="/img/shimosheji/X1.png"></img></a>
+            </div>
+            <section style="width:300px;background-color:#f8f8f8;border:1px #eaeaea solid;margin:20px auto;">
+                    <ul id="ridpopmain" class="inline">
+                    </ul>
+            </section>
+            <section style="text-align:center;margin:20px auto;">
+                <ul id="ridpopindex" class="inline">
+                </ul>
+            </section>
+            <div style="width:600px;margin:20px auto;">
+                <ul class="inline">
+                    <li><h5 style="color:#464748;">编&nbsp;辑&nbsp;图&nbsp;片 : </h5></li>
+                    <li><input type="text" style="width:300px;margin-top:10px;" id="rid_url_edit" ></input></li>
+                    <li><button style="width:60px;height:30px;" class="rgbtn" id="rid_url_edit_done" onclick="ImgChange($('#rid_url_edit').val())" >修改</button></li>
+                    <li><button style="width:60px;height:30px;" class="rgbtn" id="rid_url_edit_del"  onclick="ImgDel()" >删除</button></li>
+                </ul>
+                <ul class="inline">
+                    <li><h5 style="color:#464748;">新&nbsp;增&nbsp;图&nbsp;片 : </h5></li>
+                    <li><input type="text" style="width:300px;margin-top:10px;" id="rid_url_add" ></input></li>
+                    <li><button style="width:130px;height:30px;" class="rgbtn" id="rid_url_add_done" onclick="ImgAdd($('#rid_url_add').val())" >添加</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer hidden"> </div>
+</div>
+
+<div class="rgbase">
+    <ul class="nav nav-pills rgsubnav">
+        <!-- <li class=""><a class="muted" href="">数据统计</a></li> -->
+        <li class="active"><a>管理后台</a></li>
+    </ul>
+    <div class="rgmain">
+        <ul class="breadcrumb">
+            <li><a href="{{p_url['host_admin']}}">全部模块</a><span class="divider">&gt;</span></li>
+            <li class="active">{{p_appinfo['name']}}</li>
+        </ul>
+        <div id="adminbox">
+        </div>
+    </div>
+</div>
+
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% end %}
+
+{% block footer %}
+{% end %}
+

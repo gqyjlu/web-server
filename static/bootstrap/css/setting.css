@@ -1,0 +1,417 @@
+.option{
+	position:relative;
+	z-index:1;
+	display:inline-block;
+}
+#search_apps{
+	margin:0px;
+}
+tr.table_btn  td {
+	text-align:center;
+	height:20px;
+	color:#37B8BB;
+	cursor:pointer;
+}
+.add-events,.edit_event_btn, .reset_event_btn, .stop_event_btn, .resume_event_btn, .view_event_btn
+ {
+	color:#333;
+	text-align:left;
+	margin-right:15px;
+}
+ul.add-events-list{ position:absolute; border:1px solid #C6C6C6; background:#FDFDFD; text-align:center; border-radius:10px; padding:8px 2px; z-index:1; display:none; width:130px; right:-23px; top:34px;}
+ul.add-events-list li{ height:30px; line-height:30px; cursor:pointer;}
+ul.add-events-list li:hover{ background:#E8E8E8;}
+.add-events:hover{
+	text-decoration:underline;
+	cursor:pointer;
+	}
+.edit_event{ padding-top:8px;}
+.add-events .add {
+    background:url(/images/icons/icon.png) no-repeat 0 -672px;
+	margin-top:-5px;
+}
+.add-events:hover .add {
+    background:url(/images/icons/icon.png) no-repeat -24px -672px;
+}
+.add-events .plus {
+    background:url(/images/icons/icon.png) no-repeat 0 -912px;
+	margin-top:-3px;
+}
+.add-events:hover .plus {
+    background:url(/images/icons/icon.png) no-repeat -24px -912px;
+}
+.edit_event_btn .edit{
+    background:url(/images/icons/icon.png) no-repeat -0px -696px;
+	margin-top:-3px;
+}
+.reset_event_btn .reset{
+    background:url(/images/icons/icon.png) no-repeat -0px -720px;
+	margin-top:-3px;
+}
+.stop_event_btn .delete{
+    background:url(/images/icons/icon.png) no-repeat -0px -744px;
+	margin-top:-3px;
+}
+.minus_event_btn .minus{
+    background:url(/images/icons/icon.png) no-repeat -0px -936px;
+	margin-top:-3px;
+}
+.resume_event_btn .resume{
+    background:url(/images/icons/icon.png) no-repeat -0px -768px;
+	margin-top:-3px;
+}
+.view_event_btn .view{
+    background:url(/images/icons/icon.png) no-repeat -0px -864px;
+	margin-top:-3px;
+}
+.edit_event_btn:hover, .reset_event_btn:hover, .stop_event_btn:hover, .resume_event_btn:hover, .view_event_btn:hover{
+	color:#37B8BB;
+}
+.edit_event_btn:hover .edit{
+    background:url(/images/icons/icon.png) no-repeat -24px -696px;
+}
+.reset_event_btn:hover .reset{
+    background:url(/images/icons/icon.png) no-repeat -24px -720px;
+}
+.stop_event_btn:hover .delete{
+    background:url(/images/icons/icon.png) no-repeat -24px -744px;
+}
+.minus_event_btn:hover .minus{
+    background:url(/images/icons/icon.png) no-repeat -24px -936px;
+}
+.resume_event_btn:hover .resume{
+    background:url(/images/icons/icon.png) no-repeat -24px -768px;
+}
+.view_event_btn:hover .view{
+    background:url(/images/icons/icon.png) no-repeat -24px -864px;
+}
+.minus_event_btn{
+	display:block;
+	width:25px;
+	height:100%;
+	float: left;
+}
+.minus_event_btn .minus{ cursor: pointer}
+tr td .stop_event_btn,tr td .minus_event_btn .minus{
+	display:none;
+}
+tr:hover td .stop_event_btn, tr:hover td .minus_event_btn .minus{
+	display: inline;
+}
+tr td:hover .minus_event_btn .minus{
+	display: inline-block;
+}
+tr td .resume_event_btn{
+	display:none;
+}
+tr:hover td .resume_event_btn{
+	display: inline;
+}
+.deleted_events_list{
+	display:none;
+}
+.bottom_deleted_events span.expand{
+	color:#999;
+}
+.dialog_tips li{
+	font-size:12px;
+  line-height:24px;
+  color:#7d7d7d;
+}
+input[type="text"]{
+	margin:5px;
+    border: 1px solid #B4B4B4;
+    height: 28px;
+    line-height: 28px;
+    padding: 0px 10px;
+    box-shadow:inset 2px 2px 5px #EAEAEA;
+}
+button,a.button{
+	 margin: .5em .4em .5em .5em;
+ }
+#add_event_in table{ margin-top:30px;}
+#add_event_in table tr td.title {
+    width: 100px;
+}
+#copyfrom {
+	vertical-align: middle;
+}
+#add_event_in table tr td span.tip {
+	margin-left:30px;
+	vertical-align: middle;
+}
+/*  .mod-select .select-head{   
+	background: none repeat scroll 0 0 #FDFDFD;
+    border: 1px solid #B4B4B4;
+    box-shadow: 2px 2px 5px #EAEAEA inset;
+    width: 175px;
+	padding:0;
+} 
+  .mod-select .select-head span{
+	float:left;
+	padding-left:14px;
+	line-height:28px;
+}
+  .mod-select .select-head b{ 
+	margin-right:10px;
+}
+  .mod-select .select-body{
+	padding:0px;
+}
+  .mod-select .select-body ul li{
+	padding-left:23px;
+	padding-right:10px;
+}
+  .mod-select ul li:hover{ 
+	background:#E8E8E8;
+}*/
+.mod-select .select-head {
+    border-radius: 8px 8px 8px 8px;
+    cursor: pointer;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 10px 0 23px;
+    text-align: right;
+}
+.mod-select .select-head .selected {
+    float: left;
+}
+.mod-select .select-head{ width:150px; padding:0px 10px;}
+
+#addFunnel table.data-load td .mod-select{
+	position: relative;
+	top: 6px;
+}
+#data-load tr td{ line-height:150%;}
+.edit-app form{
+	padding-top:30px;
+	}
+.edit-app form table tr td { 
+	padding:5px 20px;
+}
+.edit-app form table tr td input[type='text']{
+	width:150px;
+	margin:0;
+}
+.edit-app form table tr td textarea{
+	border: 1px solid #B4B4B4;
+    border-radius: 8px 8px 8px 8px;
+    height: 185px;
+	width:300px;
+    line-height: 28px;
+	box-shadow: inset 2px 2px 5px #EAEAEA;
+}
+.new_input{ padding:0 10px;}
+
+#addFunnel input[type="text"]{
+	width:150px;
+}
+#addFunnel table.data-load tr td{
+	border: none;
+	padding:2px 0px;
+}
+.funnel_operate div.add-events, #addFunnel div.add-events{
+	display: inline;
+}
+input[type='radio']{
+    position: relative;
+    top:-1px;
+	vertical-align:middle;
+}
+.event_list_btn {
+	padding: 4px;
+}
+#show_log_send_policy table tr td{
+	padding: 0 22px;
+    text-indent: 0;
+}
+.icon-add{
+	background-position: 0 -1057px;
+}
+.icon-add:hover{
+	background-position: -24px -1057px;
+}
+
+/*issues index*/
+.send .mod-select-default .select-head{
+	display:inline-block;
+	text-align:left;
+}
+.select-body{
+	top:40px;
+}
+.mod .mod-body-2{
+	padding:10px 20px 20px;
+}
+.textpanel textarea{
+	width:98%;
+	border-radius:8px;
+	box-shadow: inset 2px 2px 5px #EAEAEA;
+	background:#fdfdfd;
+	border: 1px solid #B4B4B4;
+	padding:10px;
+}
+.uploadImg{
+	position:relative;
+}
+.pnl_file{
+	border: 1px solid #B4B4B4;
+	line-height: 30px;
+	border-radius:8px;
+	width:262px;
+	padding:10px 10px;
+	background:#fdfdfd;
+	z-index:1;
+}
+.close{
+	background-position: 0 -792px;
+}
+.issue-list li{
+	border-top:1px solid #B4B4B4;
+}
+.issue-list li:first-child{
+	border-top:none;
+}
+.issue-list li .c{
+	min-height:20px;
+	line-height:20px;
+}
+.replybox textarea{
+	width:98%;
+	border-radius:8px;
+	box-shadow: inset 2px 2px 5px #EAEAEA;
+	background:#fdfdfd;
+	border: 1px solid #B4B4B4;
+	height:70px;
+	padding:10px;
+}
+/*issues details*/
+.issues-details .textpanel textarea{
+	width:407px;
+	border-radius:8px;
+	box-shadow: inset 2px 2px 5px #EAEAEA;
+	background:#fdfdfd;
+	border: 1px solid #B4B4B4;
+	padding:10px;
+}
+.comment-form{
+	width:430px;
+	padding:26px 35px;
+}
+.message-list{
+	margin-left:500px;
+	display:block;
+	padding:26px 35px;
+	height:285px;
+	max-height:400px;
+	overflow-y:auto;
+	overflow-x:hidden;
+	background:#f9f9f9;
+}
+.message-list .cus{
+	margin-left:100px;
+	text-align:right;
+	overflow:hidden;
+}
+.message-list .admin{
+	margin-right:100px;
+	text-align:left;
+}
+.message-list .username{
+	font-size:14px;
+	position:relative;
+}
+.message-list .cus .username{
+	float:right;
+}
+.message-list .dialog_content{
+	color:#333;
+	border:1px solid #b4b4b4;
+	margin-top: 5px;
+	max-width:75%;
+	margin-bottom:5px;
+}
+.message-list .cus .dialog_content{
+	text-align:left;
+	float:right;
+	margin-right:35px;
+	padding:10px 14px 12px 15px;
+	background:#d8e2f4;
+	border-radius:8px;
+}
+.message-list .cus .corner{
+	position: absolute;
+	width: 17px;
+	height: 9px;
+	display: block;
+	background:url(/images/icons/issues-user.png) no-repeat 0 0;
+	left: -44px;
+	top:5px;
+}
+.message-list .admin .corner{
+	position: absolute;
+	width: 17px;
+	height: 9px;
+	display: block;
+	background:url(/images/icons/issues-admin.png) no-repeat 0 0;
+	right: -45px;
+	top: 5px;
+}
+.message-list .admin .username{
+	float:left;
+}
+.message-list .admin .dialog_content{
+	text-align:right;
+	float:left;
+	margin-left:35px;
+	padding:10px 15px 12px 14px;
+	background:#ecf7f7;
+	border-radius:8px;
+}
+.message-list .timepanel{
+	clear:both;
+	margin-top:3px;
+	line-height:20px;
+	height:20px;
+	margin-bottom:20px;
+	font-size:12px;
+	color:#b1b1b1;
+}
+.message-list .admin .timepanel{
+	padding-left:78px;
+}
+.message-list .cus .timepanel{
+	padding-right:50px;
+}
+.message-list .dialog_content .pic{
+	padding: 10px;
+	background: white;
+	border-radius: 8px;
+	text-align:center;
+	vertical-align:center;
+	overflow: hidden;
+}
+.message-list .dialog_content .pic a{
+	display:block;
+}
+.message-list .dialog_content .pic img{
+	max-width:200px;
+}
+.input-time{
+	width:45px;
+}
+.edit-app table{
+	margin-bottom:30px;
+}
+label.error{
+	color: #EA5200;
+	font-size: 14px;
+}
+#add_event table .disabled_input{
+	border:none;
+	box-shadow:none;
+	background:#F9F9F9;
+}
+#add_event table .distr td{
+	font-size:12px;
+}

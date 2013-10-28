@@ -1,0 +1,115 @@
+{% extends "user_base.html" %}
+{% block head %}
+<title>重设密码</title>
+<style type="text/css">
+.rgnav {
+    display: none;
+}
+</style>
+<script type="text/javascript"> require(['md5']); </script>
+<script type="text/javascript">
+require(['jquery','domReady!'], function(doc){
+    if ('{{p_email}}' != 'None'){
+        $('#reset_email').attr('value','{{p_email}}');
+        $('#reset_email').attr('disabled',false);
+    }
+    $('#reset_submit').click(function() {
+        $('#reset_submit').attr('disabled',false);
+    });
+    $('#reset_form').submit(function() {
+        $('#reset_email').val($.trim($('#reset_email').val()).toLowerCase());
+        $('#reset_email').val($('#reset_email').val().replace('﹫', '@'));
+        $('#reset_email').val($('#reset_email').val().replace('。', '.'));
+        var reset_email= $('#reset_email').val();
+        var reset_passwd = $('#reset_passwd').val();
+        if(reset_email.length <= 0 ){
+            $('#reset_msg').text('邮箱和密码不能为空');
+            return false;
+        }
+        if (reset_passwd.length < 6 || reset_passwd.length >20) {
+            $('#reset_msg').text('请用6-20位字母或数字作为密码');
+            return false;
+        };
+        var reset_s_passwd = hex_hmac_md5('{{p_pwsecret}}',reset_passwd);
+        $('#reset_s_passwd').attr('value',reset_s_passwd);
+        var options = { 
+            url:'{{p_url["user_api_resetpwd"]}}',
+            type:'POST', 
+            dataType: 'json',
+            success: function(data){
+                if( data.op==true){
+                    $('#reset_submit').text('修改密码成功');
+                    var next='{{p_next}}';
+                    if( next=='None' ){
+                        next='{{p_url["user_home"]}}';
+                    }
+                    location.href = decodeURIComponent(next);
+                }else{
+                    $('#reset_msg').text(data.msg);
+                    $('#reset_submit').text('重置密码');
+                    $('#reset_submit').attr('disabled',false);
+
+                }
+            },
+            error: function(data){
+                $('#reset_msg').text(data.msg);
+                $('#reset_submit').text('设置新密码');
+                $('#reset_submit').attr('disabled',true);
+                $('#reset_email').attr('disabled',true);
+            },
+            beforeSubmit: function(formData, jqForm, options){
+                $('#reset_msg').text('');
+                $('#reset_submit').text('正在设置新密码...');
+                $('#reset_submit').attr('disabled',true);                
+            }
+        }; 
+        $('#reset_form').ajaxSubmit(options); 
+        return false;
+    });
+});
+</script>
+
+
+
+
+{% end %}
+
+{% block location %}
+{% end %}
+
+{% block header %}
+{% end %}
+
+{% block body %}
+<div class="rgbase">
+    <form class="rgopbar" id="reset_form">
+        {% raw xsrf_form_html() %}
+        <ul class="inline">
+            <li class="rgsigninmsg"> <label id="reset_msg">&nbsp</label> </li>
+            <li> <input type="text" id="reset_s_passwd"  class="hidden" name="passwd"  value=""> </li>
+        </ul>
+         <div class="row-fluid" >
+            <div class="span3 offset2">
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-user"></i></span>
+                    <input class="rginput" type="text" id="reset_email" name="email" placeholder="邮箱">
+                </div>
+            </div>
+             <div class="span3">
+                <div class="input-prepend">
+                    <span class="add-on"><i class="icon-lock"></i></span>
+                    <input class="rginput" type="password" id="reset_passwd" placeholder="密码">
+                </div>
+            </div>
+            <div class="span2"> <button type="submit" id="reset_submit" class="rgbtn btn btn-success">设置新密码</button> </div>
+        </div>
+    </form>
+</div> <!-- /rgbase-->
+<!-- Le javascript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+{% end %}
+
+{% block footer %}
+{% end %}
+

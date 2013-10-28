@@ -1,0 +1,67 @@
+" File: _vimrc
+" Date: 2009-09-22
+" Author: gashero
+" NOTE: 配置一份简单的vim配置文件
+ 
+"映射常用操作
+"map [r :! python % <CR>
+"map [o :! python -i % <CR>
+"map [t :! rst2html.py % %<.html <CR>
+  
+"set autochdir               " 自动切换当前目录为当前文件所在的目录
+"set ignorecase      "大小写无关匹配
+"set incsearch       "增量搜索
+"set nohls           "搜索时随着输入立即定位，不知什么原因会关闭结果高亮
+"set cursorline      "高亮当前行背景
+"
+"filetype plugin indent on   " 开启插件
+syntax on           "开启语法高亮
+"colorscheme lucius
+"color lucius
+
+set backupcopy=yes  "设置备份时的行为为覆盖
+set nocompatible    "非兼容模式
+"set number          "行号
+"set background=dark "背景色
+set ruler           "在左下角显示当前文件所在行
+set showcmd         "在状态栏显示命令
+set showmatch       "显示匹配的括号
+set smartcase       "只能匹配，即小写全匹配，大小写混合则严格匹配
+set hlsearch        "搜索时高亮显示
+set report=0        "显示修改次数
+"set mouse=a         "控制台启用鼠标
+set nobackup        "覆盖文件时不备份
+set fileencodings=ucs-bom,UTF-8,GBK,BIG5,latin1
+set fileencoding=UTF-8
+set fileformat=unix "换行使用unix方式
+set ambiwidth=double
+set noerrorbells    "不显示响铃
+set visualbell      "可视化铃声
+"set foldmarker={,}  "缩进符号
+"set foldmethod=indent   "缩进作为折叠标识
+"set foldlevel=100   "不自动折叠
+"set foldopen-=search    "搜索时不打开折叠
+"set foldopen-=undo  "撤销时不打开折叠
+set updatecount=0   "不使用交换文件
+set magic           "使用正则时，除了$ . * ^以外的元字符都要加反斜线
+ 
+"缩进定义
+set expandtab
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
+"set smartindent
+set backspace=2     "退格键可以删除任何东西
+
+"显示TAB字符为<+++
+"set list
+"set list listchars=tab:<+
+ 
+if has("gui_running")
+    set lines=25
+    set columns=80
+    set lazyredraw  "延迟重绘
+    set guioptions-=m   "不显示菜单
+    set guioptions-=T   "不显示工具栏
+    set guifont=consolas\ 10
+endif
